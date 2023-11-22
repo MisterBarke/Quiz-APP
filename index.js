@@ -66,6 +66,7 @@ const answerBtn = document.querySelectorAll('.answerBtn');
 const startOver = document.querySelector('.reprendre');
 const translate = document.querySelector('.translate');
 const containQuestions = document.querySelector('.contain-questions');
+const cancel = document.querySelector('.cancel');
 
 let score = 0;
 const correctAnswerChecker = (state) => {
@@ -197,6 +198,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 startOver.addEventListener('click', () => {
     location.reload()
+})
+
+cancel.addEventListener('click', ()=>{
+    param.setAttribute('style', 'display: none');
 })
 // Function to shuffle an array
 function shuffleArray(array) {
