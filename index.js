@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     question.innerHTML = data.responseData.translatedText
                 }));
 
-                answerBtn.forEach(btn => {
+                /* answerBtn.forEach(btn => {
                     let url2 = `https://api.mymemory.translated.net/get?q=${btn.textContent}!&langpair=en|fr`;
                 fetch(url2, {
             
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     btn.textContent = data.responseData.translatedText
                 }));
-                });
+                }); */
                 
             
             })
