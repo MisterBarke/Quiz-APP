@@ -23,7 +23,7 @@ start.addEventListener('click', ()=>{
     localStorage.setItem('amount', amountFilter.value);
     localStorage.setItem('category', categoryFilter.value);
     localStorage.setItem('difficulty', difficultyFilter.value);
-    window.location.href = 'quiz.html';
+    window.location.href = 'index.html';
     console.log(clicked);
    if ( start.setAttribute('style', 'display: none')) {
     start.setAttribute('style', 'display: block');
