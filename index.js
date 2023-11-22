@@ -11,7 +11,6 @@ logQuiz() */
 const start = document.querySelector('.start');
 const menu = document.querySelector('.reglage');
 const param = document.querySelector('.param');
-const param2 = document.querySelector('.menu');
 const categoryFilter = document.getElementById('categoryFilter')
 const difficultyFilter = document.getElementById('difficultyFilter')
 const amountFilter = document.getElementById('amountFilter')
@@ -31,7 +30,7 @@ start.addEventListener('click', ()=>{
    }
     })
     menu.addEventListener('click', ()=>{
-        param2.setAttribute('style', 'display: block');
+        param.setAttribute('style', 'display: block');
     })
 
     let getAmount = localStorage.getItem('amount');
