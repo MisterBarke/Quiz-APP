@@ -51,7 +51,7 @@ if (!getCategory) {
 }
 
 
-let url = `https://opentdb.com/api.php?amount=${getAmount}&token=34d7851aa9ddcc7b6b5b9d84d7e15660212255a622ad278f3156e55f9fdbfc95&category=${getCategory}&difficulty=${getDifficulty}&type=multiple`;
+let url = `https://opentdb.com/api.php?amount=${getAmount}&category=${getCategory}&difficulty=${getDifficulty}&type=multiple`;
 
 
 let result = [];
