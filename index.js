@@ -23,11 +23,11 @@ start.addEventListener('click', ()=>{
     localStorage.setItem('amount', amountFilter.value);
     localStorage.setItem('category', categoryFilter.value);
     localStorage.setItem('difficulty', difficultyFilter.value);
-    window.location.href = 'index.html';
-    console.log(clicked);
-   if ( start.setAttribute('style', 'display: none')) {
-    start.setAttribute('style', 'display: block');
-   }
+    localStorage.setItem('amountText', amountFilter.textContent);
+
+param.setAttribute('style', 'display: none');
+window.location.reload()
+
     })
     menu.addEventListener('click', ()=>{
         param.setAttribute('style', 'display: block');
@@ -49,7 +49,24 @@ if (!getDifficulty) {
 if (!getCategory) {
     getCategory = 12;  // Valeur par défaut, vous pouvez utiliser une autre valeur par défaut si nécessaire
 }
+document.addEventListener('DOMContentLoaded', () => {
+    const savedDifficulty = localStorage.getItem('difficulty');
+    const savedCategory = localStorage.getItem('category');
+    const savedAmount = localStorage.getItem('amount');
 
+    // Si des valeurs sont trouvées, les appliquer aux sélecteurs
+    if (savedDifficulty) {
+        difficultyFilter.value = savedDifficulty;
+    }
+
+    if (savedCategory) {
+        categoryFilter.value = savedCategory;
+    }
+
+    if (savedAmount) {
+        amountFilter.value = savedAmount;
+    }
+});
 
 let url = `https://opentdb.com/api.php?amount=${getAmount}&category=${getCategory}&difficulty=${getDifficulty}&type=multiple`;
 
