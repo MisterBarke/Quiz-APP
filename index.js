@@ -86,92 +86,103 @@ const containQuestions = document.querySelector('.contain-questions');
 const cancel = document.querySelector('.cancel');
 
 let score = 0;
-const correctAnswerChecker = (state) => {
-    state.setAttribute('style', 'background-color: green !important')
-}
-const incorrectAnswerChecker = (IncorrectState) => {
-    IncorrectState.setAttribute('style', 'background-color: red !important');
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     fetch(url)
         .then((response) => response.json())
         .then(response => {
-            console.log(response);
             result = response.results;
             console.log(result);
-            let answersArr = [...result[index].incorrect_answers];
-            answersArr.push(result[index].correct_answer);
-            console.log(answersArr);
-            answersArr = shuffleArray(answersArr)
-            console.log(answersArr);
-
-            answersArr.forEach((answer, index) => {
-                answerBtn[index].innerHTML = answer;
-            });
-
-            question.innerHTML = result[index].question;
-            containQuestions.addEventListener('click', (e) => {
-                if ((e.target.id === 'answerOne' || e.target.id === 'answerTwo'
-                    || e.target.id === 'answerThree' || e.target.id === 'answerFour')
-                    && (e.target.textContent) === result[index].correct_answer
-                ) {
-                    tour++
-
-                    console.log(e.target.textContent);
-                    const correctAnswer = document.getElementById(`${e.target.id}`);
-                    correctAnswerChecker(correctAnswer)
+            function updateAnswers() {
+                if (result[index]) {
+                    let answersArr = [...result[index].incorrect_answers];
+                answersArr.push(result[index].correct_answer);
+                answersArr = shuffleArray(answersArr);
+        
+                answersArr.forEach((answer, i) => {
+                    answerBtn[i].innerHTML = answer;
+                });
+                question.innerHTML = result[index].question;
+                }else{
+                    console.log(score);
+                    containQuestions.innerHTML = `Your score is : ${score}/${result.length}`;
+                        startOver.style.display = 'block';
+                }
+                
+            }
+            updateAnswers()
+            function handleAnswerClick(e) {
+                const selectedAnswer = e.target;
+        
+                if (selectedAnswer.textContent === result[index].correct_answer) {
                     score++;
-
-                    setTimeout(() => {
-                        correctAnswer.setAttribute('style', 'background-color: aliceblue !important');
-                    }, 3000)
-
+                    correctAnswerHandler(selectedAnswer);
+                    disableAllAnswers();
                 } else {
-                    tour++
-                    const incorrectAnswer = document.getElementById(`${e.target.id}`);
-                    incorrectAnswerChecker(incorrectAnswer);
-                    incorrectAnswer.disabled = true;
-                    setTimeout(() => {
-                        incorrectAnswer.setAttribute('style', 'background-color: aliceblue !important');
-                        incorrectAnswer.disabled = false;
-                    }, 3000)
-                    answerBtn.forEach(btn => {
-                        if (btn.textContent === result[index].correct_answer) {
-                            correctAnswerChecker(btn);
-                            btn.disabled = true;
-                            setTimeout(() => { 
-                                btn.setAttribute('style', 'background-color: aliceblue !important');
-                                btn.disabled = false;
-                            }, 3000)
-                        }
+                    incorrectAnswerHandler(selectedAnswer);
+                    disableAllAnswers();
+                    setTimeout(()=>{
+                        answerBtn.forEach(btn=>{
+                            if (btn.textContent === result[index].correct_answer) {
+                                correctAnswerHandler(btn);
+                            }
+                        })
                     })
-                };
-
+                   // correctAnswerHandler(answerBtn.find(btn => btn.textContent === result[index].correct_answer));
+                }
+        
                 setTimeout(() => {
                     index++;
-                    let answersArr = [...result[index].incorrect_answers];
-                    answersArr.push(result[index].correct_answer);
-                    answersArr = shuffleArray(answersArr)
-                    answersArr.forEach((answer, index) => {
-                        answerBtn[index].innerHTML = answer;
-                    });
+                    console.log(index);
+                    updateAnswers();
+                    enableAllAnswers();
+        
+                    if (index < result.length) {
+                        question.innerHTML = result[index].question;
+                    } else {
+                        containQuestions.innerHTML = `Your score is : ${score}/${result.length}`;
+                        startOver.style.display = 'block';
+                    }
+                }, 3400);
+            }
+        
+            function correctAnswerHandler(answerElement) {
+                tour++;
+                answerElement.setAttribute('style', 'background-color: green !important');
 
-                    question.innerHTML = result[index].question;
-
-                }, 3400)
-                if (tour === result.length) {
-                    question.innerHTML = `Your score is : ${score}/${result.length}`;
-                   
+                setTimeout(() => {
+                    answerElement.setAttribute('style', 'background-color: aliceblue !important');
                     
-                    answerBtn.forEach(btn => {
-                        btn.innerHTML = 'Check on your score boy';
-                    });
-                    startOver.setAttribute('style', 'display: block')
-                    return
+                }, 3000);
+            }
+        
+            function incorrectAnswerHandler(answerElement) {
+                tour++;
+                answerElement.setAttribute('style', 'background-color: red !important');
+        
+                setTimeout(() => {
+                    answerElement.setAttribute('style', 'background-color: aliceblue !important');
+                    
+                }, 3000);
+            }
+        
+            function disableAllAnswers() {
+                answerBtn.forEach(btn => {
+                    btn.disabled = true;
+                });
+            }
+      
+        
+            function enableAllAnswers() {
+                answerBtn.forEach(btn => {
+                    btn.disabled = false;
+                });
+            }
+        
+            containQuestions.addEventListener('click', (e) => {
+                if (e.target.classList.contains('answerBtn')) {
+                    handleAnswerClick(e);
                 }
-               
-                console.log(answersArr);
             });
             translate.addEventListener('click', () => {
                 let url = `https://api.mymemory.translated.net/get?q=${question.innerHTML}!&langpair=en|fr`;
@@ -214,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 startOver.addEventListener('click', () => {
-    location.reload()
+    location.reload();
 })
 
 cancel.addEventListener('click', ()=>{
