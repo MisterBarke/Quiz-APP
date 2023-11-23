@@ -107,6 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log(score);
                     containQuestions.innerHTML = `Your score is : ${score}/${result.length}`;
                         startOver.style.display = 'block';
+                        containQuestions.setAttribute('style', 'font-size: 30px');
+                        containQuestions.setAttribute('style', 'text-align: center');
                 }
                 
             }
